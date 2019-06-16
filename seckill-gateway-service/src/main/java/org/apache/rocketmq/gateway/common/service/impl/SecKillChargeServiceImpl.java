@@ -2,31 +2,22 @@ package org.apache.rocketmq.gateway.common.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.rocketmq.client.producer.DefaultMQProducer;
-import org.apache.rocketmq.client.producer.SendResult;
-import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.common.request.QueryOrderRequest;
 import org.apache.rocketmq.common.response.QueryOrderResponse;
 import org.apache.rocketmq.gateway.common.dao.dataobject.SecKillProductDobj;
 import org.apache.rocketmq.gateway.common.dto.CodeMsg;
 import org.apache.rocketmq.gateway.common.dto.Result;
 import org.apache.rocketmq.gateway.common.dto.request.ChargeOrderRequest;
-import org.apache.rocketmq.gateway.common.dto.response.ChargeOrderResponse;
 import org.apache.rocketmq.gateway.common.init.SecKillProductConfig;
 import org.apache.rocketmq.gateway.common.manager.OrderQueryManager;
 import org.apache.rocketmq.gateway.common.service.SecKillChargeService;
-import org.apache.rocketmq.gateway.common.util.LogExceptionWapper;
 import org.apache.rocketmq.gateway.mq.SecKillChargeOrderProducer;
-import org.apache.rocketmq.message.constant.MessageProtocolConst;
-import org.apache.rocketmq.message.protocol.ChargeOrderMsgProtocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 /**
  * @author snowalker
@@ -106,34 +97,14 @@ public class SecKillChargeServiceImpl implements SecKillChargeService {
     @Override
     public Result secKillOrderEnqueue(ChargeOrderRequest chargeOrderRequest, String sessionId) {
 
-        // 订单号生成,组装秒杀订单消息协议
-        String orderId = UUID.randomUUID().toString();
-        String phoneNo = chargeOrderRequest.getUserPhoneNum();
+        // 订单号生成,获取手机号
 
-        ChargeOrderMsgProtocol msgProtocol = new ChargeOrderMsgProtocol();
-        msgProtocol.setUserPhoneNo(phoneNo)
-                .setProdId(chargeOrderRequest.getProdId())
-                .setChargeMoney(chargeOrderRequest.getChargePrice())
-                .setOrderId(orderId);
-        String msgBody = msgProtocol.encode();
-        LOGGER.info("秒杀订单入队,消息协议={}", msgBody);
+        // 组装秒杀下单消息协议
 
-        DefaultMQProducer mqProducer = secKillChargeOrderProducer.getProducer();
-        Message message = new Message(MessageProtocolConst.SECKILL_CHARGE_ORDER_TOPIC.getTopic(), msgBody.getBytes());
-        try {
-            SendResult sendResult = mqProducer.send(message);
-            if (sendResult == null) {
-                LOGGER.error("sessionId={},秒杀订单消息投递失败,下单失败.msgBody={},sendResult=null", sessionId, msgBody);
-                return Result.error(CodeMsg.BIZ_ERROR);
-            }
-            ChargeOrderResponse chargeOrderResponse = new ChargeOrderResponse();
-            BeanUtils.copyProperties(msgProtocol, chargeOrderResponse);
-            LOGGER.info("sessionId={},秒杀订单消息投递成功,订单入队.出参chargeOrderResponse={},sendResult={}", sessionId, chargeOrderResponse.toString(), JSON.toJSONString(sendResult));
-            return Result.success(CodeMsg.SUCCESS, chargeOrderResponse);
-        } catch (Exception e) {
-            int sendRetryTimes = mqProducer.getRetryTimesWhenSendFailed();
-            LOGGER.error("sessionId={},sendRetryTimes={},秒杀订单消息投递异常,下单失败.msgBody={},e={}", sessionId, sendRetryTimes, msgBody, LogExceptionWapper.getStackTrace(e));
-        }
+        // 发送秒杀下单消息
+
+        // 秒杀下单返回体处理
+
         return Result.error(CodeMsg.BIZ_ERROR);
     }
 

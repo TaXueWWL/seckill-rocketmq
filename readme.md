@@ -52,6 +52,29 @@
 > 订单真实下单的时候，进行库存真实校验，此时请求量已经不大了，从而做到对核心资源（DB）的保护。
 
 
+## 【任务描述】
+
+学员需要在了解业务之后完成以下实战
+
+### 秒杀订单下单生产者
+
+1. 完成 **seckill-gateway-service** 模块下的org.apache.rocketmq.gateway.mq.SecKillChargeOrderProducer.java
+中的 **afterPropertiesSet()** 方法中的生产者初始化逻辑
+2. 完成 **seckill-gateway-service** 模块下的 org.apache.rocketmq.gateway.common.service.impl.SecKillChargeServiceImpl.java中的
+**secKillOrderEnqueue()** 方法中的秒杀订单投递逻辑
 
 
+### 秒杀订单下单消费者
 
+1. 完成 **seckill-order-service** 模块下的org.apache.rocketmq.order.mq.SecKillChargeOrderConsumer.java
+中的 **init()** 方法中的defaultMQPushConsumer初始化逻辑
+2. 完成 **seckill-order-service** 模块下的org.apache.rocketmq.order.mq.listener.SecKillChargeOrderListenerImpl.java
+中的 **consumeMessage()** 方法中的秒杀订单下单逻辑
+
+### 下单检验
+
+学员在完成上述 **秒杀订单下单生产者** 、 **秒杀订单下单消费者** 后，调用seckill-gateway-service的查单接口
+
+> **/api/query.do** 接口通过userPhoneNum、prodId
+
+对秒杀订单进行查询验证。
