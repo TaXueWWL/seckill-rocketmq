@@ -1,5 +1,0 @@
-org\apache\rocketmq\common\request\QueryOrderRequest.class
-org\apache\rocketmq\message\protocol\BaseMsg.class
-org\apache\rocketmq\common\response\QueryOrderResponse.class
-org\apache\rocketmq\message\constant\MessageProtocolConst.class
-org\apache\rocketmq\message\protocol\ChargeOrderMsgProtocol.class
