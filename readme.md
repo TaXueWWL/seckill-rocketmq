@@ -16,12 +16,13 @@
     H2
         |-嵌入式数据库
 
-## 思路
+## 业务流程图
 
 业务流程图如下
 
-![项目流程图](pic/demo.png)
+![秒杀下单](pic/seckill.png)
 
+![订单查询](pic/orderquery.png)
 
 ## 模块描述
 
