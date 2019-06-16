@@ -1,4 +1,4 @@
-# seckill-rocketmq[基于RocketMQ-电商高并发场景实战]
+# seckill-rocketmq 【基于RocketMQ-电商高并发场景实战】
 
 > 场景为：示例项目以用户访问秒杀网关进行秒杀订单下单，平台通过RocketMQ对秒杀流量进行削峰填谷。用户通过主动查询订单
 获取下单结果的完整业务流程，加深对RocketMQ的理解，并学会如何在实战场景下使用RocketMQ。
