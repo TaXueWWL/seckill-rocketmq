@@ -73,8 +73,10 @@
 
 ### 下单检验
 
-学员在完成上述 **秒杀订单下单生产者** 、 **秒杀订单下单消费者** 后，调用seckill-gateway-service的查单接口
+1. 学员在完成上述 **秒杀订单下单生产者** 、 **秒杀订单下单消费者** 后，调用seckill-gateway-service的查单接口
 
 > **/api/query.do** 接口通过userPhoneNum、prodId
 
 对秒杀订单进行查询验证。
+
+2. 访问seckill-gateway-service的 **8070/h2** 及 seckill-order-service的 **8071/h2** 访问H2后台进行订单、产品查询
