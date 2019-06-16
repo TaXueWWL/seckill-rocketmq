@@ -20,7 +20,11 @@
 
 业务流程图如下
 
+### 秒杀下单流程
+
 ![秒杀下单](pic/seckill.png)
+
+### 订单查询流程
 
 ![订单查询](pic/orderquery.png)
 
