@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <!--解决插入的时候有空值的情况-->
+        <setting name="jdbcTypeForNull" value="NULL"/>
+        <!--mybatis打印sql语句-->
+        <setting name="logImpl" value="SLF4J"/>
+        <setting name="logPrefix" value="dao."/>
+    </settings>
+
+</configuration>

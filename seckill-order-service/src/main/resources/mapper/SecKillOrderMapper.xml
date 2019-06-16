@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.apache.rocketmq.order.common.dao.SecKillOrderMapper" >
+
+    <!--查询订单信息-->
+    <select id="queryOrderInfoById"
+            parameterType="org.apache.rocketmq.order.common.dao.dataobject.OrderInfoDO"
+            resultType="org.apache.rocketmq.order.common.dao.dataobject.OrderInfoDobj">
+        select
+            t.id AS id,
+            t.gmt_create AS gmtCreate,
+            t.gmt_update AS gmtUpdate,
+            t.order_id AS orderId,
+            t.order_status AS orderStatus,
+            t.user_phoneno AS userPhoneNo,
+            t.prod_id AS prodId,
+            t.prod_name AS prodName,
+            t.charge_money AS chargeMoney,
+            t.charge_time AS chargeTime,
+            t.finish_time AS finishTime
+        from t_seckill_order t
+        where t.order_id = #{orderId}
+        AND t.record_status = 0
+    </select>
+
+
+    <!--秒杀订单入库-->
+    <insert id="insertSecKillOrder"
+            parameterType="org.apache.rocketmq.order.common.dao.dataobject.OrderInfoDO">
+        insert into t_seckill_order
+        (
+            record_status,
+            order_id,
+            order_status,
+            user_phoneno,
+            prod_id,
+            prod_name,
+            charge_money,
+            charge_time,
+            finish_time
+        )
+        values
+        (
+            0,
+            #{orderId},
+            1,
+            #{userPhoneNo},
+            #{prodId},
+            #{prodName},
+            #{chargeMoney},
+            NOW(),
+            NOW()
+        )
+    </insert>
+
+    <!--订单状态修改为处理中-->
+    <update id="updateOrderStatusDealing" parameterType="org.apache.rocketmq.order.common.dao.dataobject.OrderInfoDO">
+        UPDATE t_seckill_order
+        SET order_status = 2
+        WHERE
+	        order_status = 1
+	    AND order_id = #{orderId}
+    </update>
+
+    <!--查询订单信息-->
+    <select id="queryOrderInfoByCond"
+            parameterType="org.apache.rocketmq.order.common.dao.dataobject.OrderInfoDO"
+            resultType="org.apache.rocketmq.order.common.dao.dataobject.OrderInfoDobj">
+        select
+            t.id AS id,
+            t.gmt_create AS gmtCreate,
+            t.gmt_update AS gmtUpdate,
+            t.order_id AS orderId,
+            t.order_status AS orderStatus,
+            t.user_phoneno AS userPhoneNo,
+            t.prod_id AS prodId,
+            t.prod_name AS prodName,
+            t.charge_money AS chargeMoney,
+            t.charge_time AS chargeTime,
+            t.finish_time AS finishTime
+        from t_seckill_order t
+        where t.record_status = 0
+        AND t.prod_id = #{prodId}
+        AND t.user_phoneno = #{userPhoneNo}
+    </select>
+</mapper>
