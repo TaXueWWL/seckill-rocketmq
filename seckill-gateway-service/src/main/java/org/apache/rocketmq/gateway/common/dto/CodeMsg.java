@@ -11,6 +11,7 @@ public class CodeMsg {
 
     /**通用的错误码*/
     public static CodeMsg SUCCESS = new CodeMsg("10000", "SUCCESS");
+    public static CodeMsg ORDER_INLINE = new CodeMsg("10000", "秒杀订单排队中");
     public static CodeMsg SERVER_ERROR = new CodeMsg("20000", "SERVER_ERROR");
     public static CodeMsg BIZ_ERROR = new CodeMsg("40004", "BIZ_ERROR");
     public static CodeMsg PARAM_INVALID = new CodeMsg("40005", "入参校验失败");

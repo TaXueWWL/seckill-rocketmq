@@ -129,7 +129,7 @@ public class SecKillChargeServiceImpl implements SecKillChargeService {
             ChargeOrderResponse chargeOrderResponse = new ChargeOrderResponse();
             BeanUtils.copyProperties(msgProtocol, chargeOrderResponse);
             LOGGER.info("sessionId={},秒杀订单消息投递成功,订单入队.出参chargeOrderResponse={},sendResult={}", sessionId, chargeOrderResponse.toString(), JSON.toJSONString(sendResult));
-            return Result.success(CodeMsg.SUCCESS, chargeOrderResponse);
+            return Result.success(CodeMsg.ORDER_INLINE, chargeOrderResponse);
         } catch (Exception e) {
             int sendRetryTimes = mqProducer.getRetryTimesWhenSendFailed();
             LOGGER.error("sessionId={},sendRetryTimes={},秒杀订单消息投递异常,下单失败.msgBody={},e={}", sessionId, sendRetryTimes, msgBody, LogExceptionWapper.getStackTrace(e));
