@@ -62,4 +62,20 @@
 4. 秒杀接口需要做防刷处理，可以在前端通过倒计时方式定时开放接口、增加验证码减少下单频率、增加下单前校验收货地址等方式
 
 
+## windows下单点RocketMQ搭建
+0. 解压rocketmq-all-4.4.0-bin-release.zip到C盘根目录，或者某个盘的根目录（我是C盘）
 
+        配置环境变量，增加环境变量
+        ROCKETMQ_HOME=C:\rocketmq-all-4.4.0-bin-release（不要出现空格和中文）
+
+1. 启动nameServer
+
+        mqnamesrv.cmd
+2. 启动broker
+
+        start mqbroker.cmd -n 127.0.0.1:9876 autoCreateTopicEnable=true
+3. 启动admin-console
+
+        java -jar -Drocketmq.config.namesrvAddr=127.0.0.1:9876 rocketmq-console-ng-1.0.0.jar
+
+[windows下RocketMQ安装部署](https://www.jianshu.com/p/4a275e779afa)
