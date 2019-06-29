@@ -104,7 +104,7 @@ public class SecKillChargeOrderListenerImpl implements MessageListenerConcurrent
                 return ConsumeConcurrentlyStatus.RECONSUME_LATER;
             }
         } catch (Exception e) {
-            LOGGER.error("[秒杀订单消费者]消费异常,e={}", LogExceptionWapper.getStackTrace(e));
+            LOGGER.info("[秒杀订单消费者]消费异常,e={}", LogExceptionWapper.getStackTrace(e));
         }
         return ConsumeConcurrentlyStatus.RECONSUME_LATER;
     }

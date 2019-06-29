@@ -39,6 +39,7 @@
             version = version + 1
         WHERE
             prod_id = #{prodId}
+        <![CDATA[  AND prod_stock >= 1 ]]>
 	    AND version = #{version}
     </update>
 

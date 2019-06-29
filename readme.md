@@ -79,3 +79,7 @@
         java -jar -Drocketmq.config.namesrvAddr=127.0.0.1:9876 rocketmq-console-ng-1.0.0.jar
 
 [windows下RocketMQ安装部署](https://www.jianshu.com/p/4a275e779afa)
+
+## H2后台地址
+1. 秒杀网关：http://localhost:8070/h2/
+2. 秒杀下单：http://localhost:8071/h2/

@@ -53,14 +53,15 @@ public class SecKillProductConfig implements InitializingBean {
      */
     public boolean preReduceProdStock(String prodId) {
         Preconditions.checkNotNull(prodId, "请确保prodId非空!");
-        SecKillProductDobj productDobj = getProductConfigMap().get(prodId);
-        int prodStock = productDobj.getProdStock();
-        if (prodStock <= 0) {
-            LOGGER.info("prodId={},prodStock={},当前秒杀商品库存已不足!", prodId, prodStock);
-            return false;
-        }
-        synchronized (Object.class) {
-            int afterPreReduce = --prodStock;
+        synchronized (this) {
+            SecKillProductDobj productDobj = getProductConfigMap().get(prodId);
+            int prodStock = productDobj.getProdStock();
+            if (prodStock <= 0) {
+                LOGGER.info("prodId={},prodStock={},当前秒杀商品库存已不足!", prodId, prodStock);
+                return false;
+            }
+
+            int afterPreReduce = prodStock - 1;
             if (afterPreReduce < 0) {
                 // 预减库存后小于0,说明库存预减失败,库存已不足
                 LOGGER.info("prodId={} 预减库存失败,当前库存已不足!", prodId);

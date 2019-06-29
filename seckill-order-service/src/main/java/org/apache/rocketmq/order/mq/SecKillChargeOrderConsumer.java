@@ -45,6 +45,7 @@ public class SecKillChargeOrderConsumer {
         defaultMQPushConsumer.setMessageModel(MessageModel.CLUSTERING);
         // 注册监听器
         defaultMQPushConsumer.registerMessageListener(messageListener);
+        defaultMQPushConsumer.setConsumeMessageBatchMaxSize(1);
         // 订阅所有消息
         try {
             defaultMQPushConsumer.subscribe(MessageProtocolConst.SECKILL_CHARGE_ORDER_TOPIC.getTopic(), "*");
