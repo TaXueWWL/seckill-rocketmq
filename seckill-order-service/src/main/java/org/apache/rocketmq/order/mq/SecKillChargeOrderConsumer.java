@@ -42,9 +42,12 @@ public class SecKillChargeOrderConsumer {
         // 从头开始消费
         defaultMQPushConsumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
         // 消费模式:集群模式
+        // 集群：同一条消息 只会被一个消费者节点消费到
+        // 广播：同一条消息 每个消费者都会消费到
         defaultMQPushConsumer.setMessageModel(MessageModel.CLUSTERING);
         // 注册监听器
         defaultMQPushConsumer.registerMessageListener(messageListener);
+        // 设置每次拉取的消息量：默认是16条
         defaultMQPushConsumer.setConsumeMessageBatchMaxSize(1);
         // 订阅所有消息
         try {

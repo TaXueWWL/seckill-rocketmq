@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.client.producer.SendResult;
+import org.apache.rocketmq.client.producer.SendStatus;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.common.request.QueryOrderRequest;
 import org.apache.rocketmq.common.response.QueryOrderResponse;
@@ -119,10 +120,17 @@ public class SecKillChargeServiceImpl implements SecKillChargeService {
         LOGGER.info("秒杀订单入队,消息协议={}", msgBody);
 
         DefaultMQProducer mqProducer = secKillChargeOrderProducer.getProducer();
+        // 组装RocketMQ消息体
         Message message = new Message(MessageProtocolConst.SECKILL_CHARGE_ORDER_TOPIC.getTopic(), msgBody.getBytes());
         try {
+            // 消息发送
             SendResult sendResult = mqProducer.send(message);
+            // TODO 判断SendStatus
             if (sendResult == null) {
+                LOGGER.error("sessionId={},秒杀订单消息投递失败,下单失败.msgBody={},sendResult=null", sessionId, msgBody);
+                return Result.error(CodeMsg.BIZ_ERROR);
+            }
+            if (sendResult.getSendStatus() != SendStatus.SEND_OK) {
                 LOGGER.error("sessionId={},秒杀订单消息投递失败,下单失败.msgBody={},sendResult=null", sessionId, msgBody);
                 return Result.error(CodeMsg.BIZ_ERROR);
             }

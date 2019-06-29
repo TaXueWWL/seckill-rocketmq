@@ -16,7 +16,7 @@ import javax.annotation.PostConstruct;
  * @version 1.0
  * @date 2019/6/15 10:43
  * @className SecKillChargeOrderProducer
- * @desc 秒杀订单生产者
+ * @desc 秒杀订单生产者初始化
  */
 @Component
 public class SecKillChargeOrderProducer {
@@ -34,6 +34,7 @@ public class SecKillChargeOrderProducer {
         defaultMQProducer =
                 new DefaultMQProducer(MessageProtocolConst.SECKILL_CHARGE_ORDER_TOPIC.getProducerGroup());
         defaultMQProducer.setNamesrvAddr(nameSrvAddr);
+        // 发送失败重试次数
         defaultMQProducer.setRetryTimesWhenSendFailed(3);
         try {
             defaultMQProducer.start();
