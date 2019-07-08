@@ -37,7 +37,10 @@ public class SecKillChargeOrderConsumer {
 
     @PostConstruct
     public void init() {
-        defaultMQPushConsumer = new DefaultMQPushConsumer(MessageProtocolConst.SECKILL_CHARGE_ORDER_TOPIC.getConsumerGroup());
+        defaultMQPushConsumer =
+                new DefaultMQPushConsumer(
+                    MessageProtocolConst.SECKILL_CHARGE_ORDER_TOPIC.getConsumerGroup(),
+                    true);
         defaultMQPushConsumer.setNamesrvAddr(nameSrvAddr);
         // 从头开始消费
         defaultMQPushConsumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);

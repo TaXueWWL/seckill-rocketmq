@@ -76,7 +76,7 @@
         start mqbroker.cmd -n 127.0.0.1:9876 autoCreateTopicEnable=true
 3. 启动admin-console
 
-        java -jar -Drocketmq.config.namesrvAddr=127.0.0.1:9876 rocketmq-console-ng-1.0.0.jar
+        java -jar -Drocketmq.config.namesrvAddr=127.0.0.1:9876 rocketmq-console-ng.jar
 
 [windows下RocketMQ安装部署](https://www.jianshu.com/p/4a275e779afa)
 

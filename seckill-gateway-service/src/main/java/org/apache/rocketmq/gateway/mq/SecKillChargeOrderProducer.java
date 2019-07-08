@@ -32,7 +32,8 @@ public class SecKillChargeOrderProducer {
     public void init() {
 
         defaultMQProducer =
-                new DefaultMQProducer(MessageProtocolConst.SECKILL_CHARGE_ORDER_TOPIC.getProducerGroup());
+                new DefaultMQProducer
+                        (MessageProtocolConst.SECKILL_CHARGE_ORDER_TOPIC.getProducerGroup(), true);
         defaultMQProducer.setNamesrvAddr(nameSrvAddr);
         // 发送失败重试次数
         defaultMQProducer.setRetryTimesWhenSendFailed(3);
