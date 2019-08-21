@@ -1,5 +1,6 @@
 package org.apache.rocketmq.gateway.common.dao;
 
+import org.apache.rocketmq.gateway.common.dao.dataobject.SecKillProductDO;
 import org.apache.rocketmq.gateway.common.dao.dataobject.SecKillProductDobj;
 
 import java.util.List;
@@ -25,4 +26,11 @@ public interface SecKillProductMapper {
      * @return
      */
     SecKillProductDobj queryProdById(String prodId);
+
+    /**
+     * 更新商品信息
+     * @param updateProdData
+     * @return
+     */
+    int updateProdInfo(SecKillProductDO updateProdData);
 }

@@ -31,4 +31,22 @@
         where t.prod_status = 0
         and t.prod_id = #{prodId}
     </select>
+
+    <!--任务执行状态到处理中-->
+    <update id="updateProdInfo"
+            parameterType="org.apache.rocketmq.gateway.common.dao.dataobject.SecKillProductDO">
+        update t_seckill_product t
+        <set>
+            <if test="prodName != null and prodName != ''">
+                t.prod_name = #{prodName},
+            </if>
+            <if test="prodPrice != null and prodPrice != ''">
+                t.prod_price = #{prodPrice},
+            </if>
+            <if test="prodStatus != null and prodStatus != ''">
+                t.prod_status = #{prodStatus},
+            </if>
+        </set>
+        where t.prod_id = #{prodId}
+    </update>
 </mapper>
