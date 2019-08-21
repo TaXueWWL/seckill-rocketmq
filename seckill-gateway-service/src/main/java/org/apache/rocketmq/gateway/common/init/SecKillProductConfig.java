@@ -7,6 +7,8 @@ import org.apache.rocketmq.gateway.common.service.SecKillProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -29,6 +31,9 @@ public class SecKillProductConfig implements InitializingBean {
     private static final Map<String, SecKillProductDobj> PRODUCT_CONFIG_MAP =
             new ConcurrentHashMap<>(16);
 
+    @Autowired
+    RedisTemplate<String, Object> redisTemplate;
+
     @Resource(name = "secKillProductService")
     SecKillProductService secKillProductService;
 
@@ -41,9 +46,9 @@ public class SecKillProductConfig implements InitializingBean {
         }
         killProductList.stream().forEach((secKillProductDobj -> {
             String prodId = secKillProductDobj.getProdId();
-            PRODUCT_CONFIG_MAP.put(prodId, secKillProductDobj);
+            redisTemplate.opsForValue().set(prodId, secKillProductDobj);
         }));
-        LOGGER.info("[SecKillProductConfig]初始化秒杀配置完成,商品信息=[{}]", JSON.toJSONString(PRODUCT_CONFIG_MAP));
+        LOGGER.info("[SecKillProductConfig]初始化秒杀配置完成,商品信息=[{}]", JSON.toJSONString(killProductList));
     }
 
     /**
@@ -54,7 +59,7 @@ public class SecKillProductConfig implements InitializingBean {
     public boolean preReduceProdStock(String prodId) {
         Preconditions.checkNotNull(prodId, "请确保prodId非空!");
         synchronized (this) {
-            SecKillProductDobj productDobj = getProductConfigMap().get(prodId);
+            SecKillProductDobj productDobj = (SecKillProductDobj) redisTemplate.opsForValue().get(prodId);
             int prodStock = productDobj.getProdStock();
             if (prodStock <= 0) {
                 LOGGER.info("prodId={},prodStock={},当前秒杀商品库存已不足!", prodId, prodStock);
