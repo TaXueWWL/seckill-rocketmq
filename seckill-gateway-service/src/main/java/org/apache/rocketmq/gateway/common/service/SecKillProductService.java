@@ -18,4 +18,13 @@ public interface SecKillProductService {
      * @return
      */
     List<SecKillProductDobj> querySecKillProductList();
+
+    /**
+     * 根据产品id查询产品信息
+     * @param prodId
+     * @return
+     */
+    SecKillProductDobj queryProdById(String prodId);
+
+
 }

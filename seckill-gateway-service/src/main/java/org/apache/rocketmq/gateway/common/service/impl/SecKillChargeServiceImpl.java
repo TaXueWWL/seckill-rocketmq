@@ -90,7 +90,7 @@ public class SecKillChargeServiceImpl implements SecKillChargeService {
     @Override
     public boolean checkProdConfigBeforeKillCharge(String prodId, String sessionId) {
         // 商品校验
-        SecKillProductDobj productDobj = productConfig.getProductConfig(prodId);
+        SecKillProductDobj productDobj = (SecKillProductDobj) productConfig.getRedisTemplate().opsForValue().get(prodId);
         if (productDobj == null) {
             LOGGER.info("sessionId={},prodId={},对应的商品信息不存在,返回下单失败", sessionId, prodId);
             return false;

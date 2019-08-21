@@ -16,4 +16,19 @@
         where t.prod_status = 0
     </select>
 
+    <!--根据id查询产品信息-->
+    <select id="queryProdById"
+            parameterType="java.lang.String"
+            resultType="org.apache.rocketmq.gateway.common.dao.dataobject.SecKillProductDobj">
+        select
+            t.id AS id,
+            t.prod_id AS prodId,
+            t.prod_name AS prodName,
+            t.prod_stock AS prodStock,
+            t.prod_price AS prodPrice,
+            t.prod_status AS prodStatus
+        from t_seckill_product t
+        where t.prod_status = 0
+        and t.prod_id = #{prodId}
+    </select>
 </mapper>

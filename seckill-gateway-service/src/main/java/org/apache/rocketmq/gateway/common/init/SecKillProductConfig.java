@@ -13,8 +13,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author snowalker
@@ -27,9 +26,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SecKillProductConfig implements InitializingBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SecKillProductConfig.class);
-
-    private static final Map<String, SecKillProductDobj> PRODUCT_CONFIG_MAP =
-            new ConcurrentHashMap<>(16);
 
     @Autowired
     RedisTemplate<String, Object> redisTemplate;
@@ -46,7 +42,7 @@ public class SecKillProductConfig implements InitializingBean {
         }
         killProductList.stream().forEach((secKillProductDobj -> {
             String prodId = secKillProductDobj.getProdId();
-            redisTemplate.opsForValue().set(prodId, secKillProductDobj);
+            redisTemplate.opsForValue().set(prodId, secKillProductDobj, 86400, TimeUnit.SECONDS);
         }));
         LOGGER.info("[SecKillProductConfig]初始化秒杀配置完成,商品信息=[{}]", JSON.toJSONString(killProductList));
     }
@@ -75,21 +71,17 @@ public class SecKillProductConfig implements InitializingBean {
             // 预减库存成功,回写库存
             LOGGER.info("prodId={} 预减库存成功,当前扣除后剩余库存={}!", prodId, afterPreReduce);
             productDobj.setProdStock(afterPreReduce);
-            getProductConfigMap().put(prodId, productDobj);
+            redisTemplate.opsForValue().set(prodId, productDobj, 86400, TimeUnit.SECONDS);
             return true;
         }
     }
 
-    /**
-     * 根据商品id获取商品配置信息
-     * @param prodId
-     * @return
-     */
-    public SecKillProductDobj getProductConfig(String prodId) {
-        return getProductConfigMap().get(prodId);
+    public RedisTemplate<String, Object> getRedisTemplate() {
+        return redisTemplate;
     }
 
-    public static Map<String, SecKillProductDobj> getProductConfigMap() {
-        return PRODUCT_CONFIG_MAP;
+    public SecKillProductConfig setRedisTemplate(RedisTemplate<String, Object> redisTemplate) {
+        this.redisTemplate = redisTemplate;
+        return this;
     }
 }

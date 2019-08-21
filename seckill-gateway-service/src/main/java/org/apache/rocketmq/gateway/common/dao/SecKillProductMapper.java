@@ -18,4 +18,11 @@ public interface SecKillProductMapper {
      * @return
      */
     List<SecKillProductDobj> querySecKillProductList();
+
+    /**
+     * 根据产品id查询产品
+     * @param prodId
+     * @return
+     */
+    SecKillProductDobj queryProdById(String prodId);
 }
