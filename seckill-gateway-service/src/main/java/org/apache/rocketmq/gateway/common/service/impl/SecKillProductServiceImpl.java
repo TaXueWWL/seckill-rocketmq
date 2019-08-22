@@ -89,7 +89,10 @@ public class SecKillProductServiceImpl implements SecKillProductService {
             throw new RuntimeException(message);
         }
         // 更新完成缓存失效
-        redisTemplate.delete(prodId);
+        if (redisTemplate.delete(prodId)) {
+            // 发送告警日志，通知缓存失效失败
+            LOGGER.warn("商品信息缓存失效[失败],请关注!,prodId={}", prodId);
+        }
         LOGGER.info("更新产品信息成功,刷新缓存完成.prodId={}", prodId);
     }
 }
