@@ -10,7 +10,7 @@ package org.apache.rocketmq.message.constant;
 public enum MessageProtocolConst {
 
     /**SECKILL_CHARGE_ORDER_TOPIC 秒杀下单消息协议*/
-    SECKILL_CHARGE_ORDER_TOPIC("SECKILL_CHARGE_ORDER_TOPIC", "PID_SECKILL_CHARGE_ORDER", "CID_SECKILL_CHARGE_ORDER", "秒杀下单消息协议"),
+    SECKILL_CHARGE_ORDER_TOPIC("SECKILL_CHARGE_ORDER_TOPIC", "GID_SNOWALKE_TEST", "GID_SNOWALKE_TEST", "秒杀下单消息协议"),
     ;
     /**消息主题*/
     private String topic;

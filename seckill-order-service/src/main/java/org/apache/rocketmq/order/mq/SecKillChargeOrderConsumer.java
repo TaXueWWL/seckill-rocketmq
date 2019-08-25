@@ -1,14 +1,19 @@
 package org.apache.rocketmq.order.mq;
 
+import org.apache.rocketmq.acl.common.AclClientRPCHook;
+import org.apache.rocketmq.acl.common.SessionCredentials;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
+import org.apache.rocketmq.client.consumer.rebalance.AllocateMessageQueueAveragely;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.common.consumer.ConsumeFromWhere;
 import org.apache.rocketmq.common.protocol.heartbeat.MessageModel;
 import org.apache.rocketmq.message.constant.MessageProtocolConst;
+import org.apache.rocketmq.order.common.config.MQNamesrvConfig;
 import org.apache.rocketmq.order.common.util.LogExceptionWapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -27,8 +32,14 @@ public class SecKillChargeOrderConsumer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SecKillChargeOrderConsumer.class);
 
-    @Value("${rocketmq.nameServer}")
-    String nameSrvAddr;
+    @Autowired
+    MQNamesrvConfig namesrvConfig;
+
+    @Value("${rocketmq.acl.accesskey}")
+    String aclAccessKey;
+
+    @Value("${rocketmq.acl.accessSecret}")
+    String aclAccessSecret;
 
     private DefaultMQPushConsumer defaultMQPushConsumer;
 
@@ -40,8 +51,10 @@ public class SecKillChargeOrderConsumer {
         defaultMQPushConsumer =
                 new DefaultMQPushConsumer(
                     MessageProtocolConst.SECKILL_CHARGE_ORDER_TOPIC.getConsumerGroup(),
-                    true);
-        defaultMQPushConsumer.setNamesrvAddr(nameSrvAddr);
+                        new AclClientRPCHook(new SessionCredentials(aclAccessKey, aclAccessSecret)),
+                        // 平均分配队列算法，hash
+                        new AllocateMessageQueueAveragely());
+        defaultMQPushConsumer.setNamesrvAddr(namesrvConfig.nameSrvAddr());
         // 从头开始消费
         defaultMQPushConsumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
         // 消费模式:集群模式
@@ -50,7 +63,7 @@ public class SecKillChargeOrderConsumer {
         defaultMQPushConsumer.setMessageModel(MessageModel.CLUSTERING);
         // 注册监听器
         defaultMQPushConsumer.registerMessageListener(messageListener);
-        // 设置每次拉取的消息量：默认是16条
+        // 设置每次拉取的消息量，默认为1
         defaultMQPushConsumer.setConsumeMessageBatchMaxSize(1);
         // 订阅所有消息
         try {

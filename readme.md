@@ -83,3 +83,11 @@
 ## H2后台地址
 1. 秒杀网关：http://localhost:8070/h2/
 2. 秒杀下单：http://localhost:8071/h2/
+
+## ACL支持
+> 支持了ACL方式，编译打包后运行,云上envType为aliyun，线下envType为offline
+
+    网关
+    java -jar -DenvType=aliyun seckill-gateway-service-1.0.0.jar
+    下单
+    java -jar -DenvType=aliyun seckill-order-service-1.0.0.jar

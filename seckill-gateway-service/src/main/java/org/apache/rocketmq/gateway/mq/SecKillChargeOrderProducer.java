@@ -1,11 +1,15 @@
 package org.apache.rocketmq.gateway.mq;
 
+import org.apache.rocketmq.acl.common.AclClientRPCHook;
+import org.apache.rocketmq.acl.common.SessionCredentials;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
+import org.apache.rocketmq.gateway.common.config.MQNamesrvConfig;
 import org.apache.rocketmq.gateway.common.util.LogExceptionWapper;
 import org.apache.rocketmq.message.constant.MessageProtocolConst;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -23,18 +27,25 @@ public class SecKillChargeOrderProducer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SecKillChargeOrderProducer.class);
 
-    @Value("${rocketmq.nameServer}")
-    String nameSrvAddr;
+    @Autowired
+    MQNamesrvConfig namesrvConfig;
+
+    @Value("${rocketmq.acl.accesskey}")
+    String aclAccessKey;
+
+    @Value("${rocketmq.acl.accessSecret}")
+    String aclAccessSecret;
+
 
     private DefaultMQProducer defaultMQProducer;
 
     @PostConstruct
     public void init() {
-
         defaultMQProducer =
                 new DefaultMQProducer
-                        (MessageProtocolConst.SECKILL_CHARGE_ORDER_TOPIC.getProducerGroup(), true);
-        defaultMQProducer.setNamesrvAddr(nameSrvAddr);
+                        (MessageProtocolConst.SECKILL_CHARGE_ORDER_TOPIC.getProducerGroup(),
+                                new AclClientRPCHook(new SessionCredentials(aclAccessKey, aclAccessSecret)));
+        defaultMQProducer.setNamesrvAddr(namesrvConfig.nameSrvAddr());
         // 发送失败重试次数
         defaultMQProducer.setRetryTimesWhenSendFailed(3);
         try {
