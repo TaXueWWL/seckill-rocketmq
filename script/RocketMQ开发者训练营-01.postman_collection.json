@@ -1,0 +1,95 @@
+{
+	"info": {
+		"_postman_id": "d0a4c2c3-d3d3-414e-b34e-9a900adca41c",
+		"name": "RocketMQ开发者训练营-01",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://127.0.0.1:8070/api/charge.do",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "userPhoneNum",
+							"value": "15288888886",
+							"type": "text"
+						},
+						{
+							"key": "chargePrice",
+							"value": "5999.000",
+							"type": "text"
+						},
+						{
+							"key": "prodId",
+							"value": "pid_0001",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8070/api/charge.do",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8070",
+					"path": [
+						"api",
+						"charge.do"
+					]
+				},
+				"description": "秒杀商品下单"
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:8070/api/query.do",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "userPhoneNum",
+							"value": "15288888886",
+							"type": "text"
+						},
+						{
+							"key": "prodId",
+							"value": "pid_0001",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8070/api/query.do",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8070",
+					"path": [
+						"api",
+						"query.do"
+					]
+				},
+				"description": "订单查询"
+			},
+			"response": []
+		}
+	]
+}
