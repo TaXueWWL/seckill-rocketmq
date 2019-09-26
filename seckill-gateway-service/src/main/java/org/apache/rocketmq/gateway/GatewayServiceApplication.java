@@ -14,6 +14,7 @@ import org.springframework.context.annotation.ImportResource;
 public class GatewayServiceApplication {
 
     public static void main(String[] args) {
+        System.setProperty("envType", "aliyun");
         SpringApplication.run(GatewayServiceApplication.class, args);
     }
 

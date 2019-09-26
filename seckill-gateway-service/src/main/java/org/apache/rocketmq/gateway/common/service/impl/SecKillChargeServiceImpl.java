@@ -17,7 +17,7 @@ import org.apache.rocketmq.gateway.common.init.SecKillProductConfig;
 import org.apache.rocketmq.gateway.common.manager.OrderQueryManager;
 import org.apache.rocketmq.gateway.common.service.SecKillChargeService;
 import org.apache.rocketmq.gateway.common.util.LogExceptionWapper;
-import org.apache.rocketmq.gateway.mq.SecKillChargeOrderProducer;
+import org.apache.rocketmq.gateway.mq.ChargeOrderBootProducer;
 import org.apache.rocketmq.message.constant.MessageProtocolConst;
 import org.apache.rocketmq.message.protocol.ChargeOrderMsgProtocol;
 import org.slf4j.Logger;
@@ -45,7 +45,7 @@ public class SecKillChargeServiceImpl implements SecKillChargeService {
     SecKillProductConfig productConfig;
 
     @Autowired
-    SecKillChargeOrderProducer secKillChargeOrderProducer;
+    ChargeOrderBootProducer chargeOrderBootProducer;
 
     @Autowired
     OrderQueryManager orderQueryManager;
@@ -119,7 +119,7 @@ public class SecKillChargeServiceImpl implements SecKillChargeService {
         String msgBody = msgProtocol.encode();
         LOGGER.info("秒杀订单入队,消息协议={}", msgBody);
 
-        DefaultMQProducer mqProducer = secKillChargeOrderProducer.getProducer();
+        DefaultMQProducer mqProducer = chargeOrderBootProducer.getProducer();
         // 组装RocketMQ消息体
         Message message = new Message(MessageProtocolConst.SECKILL_CHARGE_ORDER_TOPIC.getTopic(), msgBody.getBytes());
         try {

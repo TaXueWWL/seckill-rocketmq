@@ -36,20 +36,12 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.apache.rocketmq/rocketmq-client -->
+        <!-- https://mvnrepository.com/artifact/org.apache.rocketmq/rocketmq-spring-boot-starter -->
         <dependency>
             <groupId>org.apache.rocketmq</groupId>
-            <artifactId>rocketmq-client</artifactId>
-            <version>4.5.1</version>
+            <artifactId>rocketmq-spring-boot-starter</artifactId>
+            <version>2.0.3</version>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.apache.rocketmq/rocketmq-acl -->
-        <dependency>
-            <groupId>org.apache.rocketmq</groupId>
-            <artifactId>rocketmq-acl</artifactId>
-            <version>4.5.1</version>
-        </dependency>
-
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
